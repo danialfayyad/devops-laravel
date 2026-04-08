@@ -14,11 +14,12 @@ node {
         }
     }
 
-    stage("Deploy") {
-        docker.image('agung3wi/alpine-rsync:1.1').inside('-u root') {
-            sh 'mkdir -p /tmp/deploy'
-            sh 'rsync -rav --delete ./ /tmp/deploy --exclude=.env --exclude=storage --exclude=.git'
-            sh 'echo "Deploy berhasil ke folder lokal"'
-        }
+    stage("Deploy Local") {
+        sh '''
+        rm -rf laravel-deploy
+        mkdir laravel-deploy
+        cp -r $(ls -A | grep -v laravel-deploy) laravel-deploy/
+        echo "Deploy ke workspace berhasil"
+        '''
     }
 }
